@@ -10,12 +10,14 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  const ip = socket.handshake.address;
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", { ip, msg });
+  console.log("A user connected");
+
+  socket.on("chat message", (data) => {
+    console.log(`Message from ${data.ip} at ${data.time}: ${data.msg}`);
+    io.emit("chat message", data); // そのままクライアントに送信
   });
 });
 
 server.listen(process.env.PORT || 3000, () => {
-  console.log("listenin on 3000");
+  console.log("server listen on 3000");
 });
